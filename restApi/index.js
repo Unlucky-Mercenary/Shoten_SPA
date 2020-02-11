@@ -54,6 +54,30 @@ app.get('/api/members', (req, res) => {
     });  
 }); 
 
+//購入履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
+app.get('/api/orders/:memberName/:date', (req, res) => {
+    var orders = [];
+    db.get_orders(req.params.memberName, req.params.date, function (orders) {
+        res.json(orders);
+   }); 
+}); 
+
+//清算履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
+app.get('/api/checks/:memberName/:date', (req, res) => {
+    var checks = [];
+    db.get_checks(req.params.memberName, req.params.date, function (checks) {
+        res.json(checks);
+   }); 
+}); 
+
+//未清算額を参照するAPI
+app.get('/api/unpaid/:memberName', (req, res) => {
+    var unpaid_sum=0;
+    db.get_unpaidsum(req.params.memberName,function (unpaid_sum){
+        res.json(unpaid_sum);
+   }); 
+}); 
+
 
 /*
 server.on('request', function (req, res) {

@@ -88,6 +88,54 @@ exports.get_orders = function (name,date,callback) {
     }, 0);
 }
 
+exports.get_checks = function (name,date,callback) {
+    setTimeout(function () {
+        var client = new pg.Client(config.constring);
+        date = String(date);
+        var end_date = moment(date).endOf('month').format("YYYYMMDD");
+        client.connect(function (err) {
+            if (err) {
+                console.err('could not connect to postgres', err);
+            }
+            client.query('select * from checks where date >=$1 and date <=$2 and name=$3 ORDER BY check_id DESC',[date,end_date,name],function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+                checks = result.rows;
+                client.end();
+                callback(checks);
+
+            });
+        });
+
+
+    }, 0);
+}
+
+exports.get_unpaidsum = function (name,callback) {
+    setTimeout(function () {
+        var client = new pg.Client(config.constring);
+        var unpaid_sum = 0;
+        client.connect(function (err) {
+            if (err) {
+                console.err('could not connect to postgres', err);
+            }
+                //console.log(text);
+                client.query("SELECT price from orders where name=$1 and paid=0", [name], function (err, result) {
+                    for (i = 0; i < result.rows.length;i++){
+                        unpaid_sum += result.rows[i].price;
+                    }
+                    //console.log(result.rows);
+                callback(unpaid_sum);
+                client.end();
+                });
+            
+        });
+
+
+    }, 0);
+}
+
 
 
 exports.get_all_orders = function (callback) {
