@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charaset = "utf-8">
+        <title>admin</title>
+		<style>{
+    text-decoration: none;
+    padding: 0px;
+    margin: 0px;
+    color: rgba(0,0,0,0.87);
+}
+
+.site-width {
+    width: 100%;
+}
+
+#main {
+    background-color: #FFD464;
+}
+
+body {
+    background-color: #FFD464;
+}
+
+
+
+.character-area {
+    float: left;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+.panel-ceo {
+    width: 33vw;
+    display: block;
+    float: left;
+    box-sizing: border-box;
+}
+
+#container-top-characters {
+    margin: 0 auto;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#container-bottom-characters {
+    margin: 0 auto;
+    width: 66vw;
+    overflow: hidden;
+}
+.add{
+background: #1253A4;/*ボタン色*/
+color: #FFF;
+}
+
+.delete{
+background: #F26964;/*ボタン色*/
+color: #FFF;
+}
+
+.btn {
+    width: 25vw;
+    margin: 0 auto;
+    display: block;
+    font-size: 2vw;
+}
+
+table {
+	border-collapse: collapse;
+	margin-left:auto;margin-right:auto;
+}
+td {
+	border: solid 1px;
+	padding: 0.5em;
+}
+th {
+	border: solid 1px;
+	padding: 0.5em;
+}
+
+.js-panel-select {
+    border: 5px rgba(0,0,0,0) solid; 
+}
+.center{
+text-align:center;
+}
+
+.js-btn-prohibid {
+    background-color: gray; 
+
+.js-btn-permit {
+    background-color: yellow; 
+}
+		</style>
+    </head>
+    
+    <body>
+	<h3>管理者メニュー</h3>
+
+        <header>
+        </header>
+        <div id="main" class="site-width">
+		<form action="/admin" method="POST">
+		<input type="text" class="text1" name="name">
+		<input type="submit"　 class="add" value="メンバー追加">
+		</form>
+		<br>
+		<form action="/admin" method="POST">
+		<input type="text" class="text2" name="price">
+		 <input type="submit" class="add" value="価格追加"  >
+		</form>
+		<br>
+		<br>
+		<form action="/admin" method="POST">
+		<input type="text" class="text1" name="d_name">
+		<input type="submit" class="delete" value="メンバー削除">
+		</form>
+		<br>
+		<form action="/admin" method="POST">
+		<input type="text" class="text2" name="d_price">
+		 <input type="submit" class="delete" value="価格削除"  >
+		</form>
+		<br>
+		<form action="/admin" method="POST">
+		<input type="text" class="text2" name="d_order"  placeholder="注文番号">
+		 <input type="submit" class="delete" value="オーダー削除" >
+		</form>
+		</div>
+		
+
+<br>
+<div class='center'>
+   <input type="button" onclick="location.href='./'" value="Topへ戻る">
+   </div>
+   
+    </body>
+
+
+</html>
