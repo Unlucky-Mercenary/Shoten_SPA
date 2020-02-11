@@ -78,6 +78,34 @@ app.get('/api/unpaid/:memberName', (req, res) => {
    }); 
 }); 
 
+//Create(POSTで実装すべきだが面倒なのでGetで行う)
+//メンバー追加
+app.get('/api/add/name/:memberName', (req, res) => {
+    db.add_name(req.params.memberName,function (err) {
+        if(err){
+            res.send('500')
+        }
+        else{
+            res.send('200')
+        }
+    });
+}); 
+
+//値段追加
+app.get('/api/add/price/:price', (req, res) => {
+    db.add_price(req.params.price,function (err) {
+        if(err){
+            res.send('500')
+        }
+        else{
+            res.send('200')
+        }
+    });
+}); 
+
+//Update
+//orderを取る
+
 
 /*
 server.on('request', function (req, res) {

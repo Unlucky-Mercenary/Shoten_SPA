@@ -219,36 +219,21 @@ exports.set_check = function (name, paid,unpaid_sum,date_id, callback) {
         var client = new pg.Client(config.constring);
         var today = 0;
         var checks=[]
-        if (paid == 1) {
-            //console.log(date_id);
-            today = moment().format("YYYYMMDD");
-            client.connect(function (err) {
-                if (err) {
-                    console.err('could not connect to postgres', err);
-                }
-                client.query("INSERT INTO checks VALUES($1,$2,$3,$4)", [date_id,name,unpaid_sum,today], function (err) {
-                    //console.log(err);
-                    client.query("SELECT * from checks where name=$1 ORDER by check_id DESC ", [name], function (err, result) {
-                        checks = result.rows;
-                        client.end();
-                        callback(checks);
-                    });
-                });
-            });
-        }
-        else {
-            client.connect(function (err) {
-                if (err) {
-                    console.err('could not connect to postgres', err);
-                }
-                client.query("SELECT * from checks where name=$1 ORDER by check_id DESC", [name], function (err, result) {
+        //console.log(date_id);
+        today = moment().format("YYYYMMDD");
+        client.connect(function (err) {
+        if (err) {
+            console.err('could not connect to postgres', err);
+            }
+        client.query("INSERT INTO checks VALUES($1,$2,$3,$4)", [date_id,name,unpaid_sum,today], function (err) {
+        //console.log(err);
+        client.query("SELECT * from checks where name=$1 ORDER by check_id DESC ", [name], function (err, result) {
                 checks = result.rows;
-                //console.log(checks);
                 client.end();
                 callback(checks);
                 });
             });
-        }
+        });
 
     }, 0);
 }
@@ -260,6 +245,7 @@ exports.add_price = function (price, callback) {
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
+                callback(err);
             }
             client.query("INSERT INTO  prices(price,freq) values($1,0)", [price], function (err, result) {
                 //console.log(text);
@@ -299,6 +285,7 @@ exports.add_name = function (name, callback) {
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
+                callback(err);
             }
             client.query("INSERT INTO  lab_members(name) values($1)", [name], function (err, result) {
                 //console.log(text);
