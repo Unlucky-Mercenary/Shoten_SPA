@@ -12,13 +12,14 @@ var moment = require('moment');
 
 var msg;
 var posts = [];
-var index_template = fs.readFileSync(__dirname + '/lab_member/template/all_member.ejs', 'utf-8');
-var admin_template = fs.readFileSync(__dirname + '/admin/template/admin.ejs', 'utf-8');
-var price_template = fs.readFileSync(__dirname + '/price/template/select_price.ejs', 'utf-8');
-var finish_template = fs.readFileSync(__dirname + '/price/template/finish.ejs', 'utf-8');
-var order_error_template = fs.readFileSync(__dirname + '/price/template/order_error.ejs', 'utf-8');
+//var index_template = fs.readFileSync(__dirname + '/lab_member/template/all_member.ejs', 'utf-8');
+//var admin_template = fs.readFileSync(__dirname + '/admin/template/admin.ejs', 'utf-8');
+//var price_template = fs.readFileSync(__dirname + '/price/template/select_price.ejs', 'utf-8');
+//var finish_template = fs.readFileSync(__dirname + '/price/template/finish.ejs', 'utf-8');
+//var order_error_template = fs.readFileSync(__dirname + '/price/template/order_error.ejs', 'utf-8');
 var app = express();
 var member_id=[];
+app.listen(config.port,config.ip);
 
 app.use(session({
     secret: 'session',
@@ -32,22 +33,45 @@ app.use(session({
 })); 
 
 
+//READ
+//å€¤æ®µã‚’å‚ç…§ã™ã‚‹API
+app.get('/api/prices', (req, res) => {
+    var members = [];
+    db.get_prices(function (price) {
+        //console.log(members);
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.json(price);
+    });  
+}); 
+
+//ãƒ¡ãƒ³ãƒãƒ¼ã‚’å‚ç…§ã™ã‚‹API
+app.get('/api/members', (req, res) => {
+    var members = [];
+    db.get_members(function (members) {
+        //console.log(members);
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.json(members);
+    });  
+}); 
+
+
+/*
 server.on('request', function (req, res) {
 
-    //ƒ}ƒbƒsƒ“ƒO
-    if (req.url == '/' && req.method == 'GET') {
+    //ï¿½}ï¿½bï¿½sï¿½ï¿½ï¿½O
+    app.get(req.url == '/api/members' && req.method == 'GET') {
         var members = [];
         db.get_members(function (members) {
-            //console.log(members);
-            render_form.template(members, res, index_template);
+            console.log(members);
+            res.send('members');
         });  
     }
-    else if (req.url == '/admin' && req.method == 'GET') {
+    if (req.url == '/admin' && req.method == 'GET') {
             render_form.a_template(res,admin_template);
     }
     else if (req.url == '/admin' && req.method == 'POST') {
         req.data = "";
-        // ƒtƒH[ƒ€‚©‚ç‚Ìƒf[ƒ^‚ğóM
+        // ï¿½tï¿½Hï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½M
         req.on("readable", function () {
             req.data += req.read() || '';
             //console.log(req.data);
@@ -57,13 +81,13 @@ server.on('request', function (req, res) {
             if (Object.keys(query)[0] == "name") {
                 db.add_name(query.name,function () {
                     //console.log(date);
-                    render_form.a_template(res, admin_template);
+                    //render_form.a_template(res, admin_template);
                 });
             }
             else if (Object.keys(query)[0] == "price") {
                 db.add_price(query.price,function () {
                     //console.log(date);
-                    render_form.a_template(res, admin_template);
+                    //render_form.a_template(res, admin_template);
                 });
             }
             else if (Object.keys(query)[0] == "d_name") {
@@ -71,19 +95,19 @@ server.on('request', function (req, res) {
                 db.delete_order(query.d_name, function () {
                 db.delete_name(query.d_name, function () {
                     //console.log(date);
-                    render_form.a_template(res, admin_template);
+                    //render_form.a_template(res, admin_template);
                     });
                     });
                 });
             }
             else if (Object.keys(query)[0] == "d_price") {
                 db.delete_price(query.d_price, function () {
-                    render_form.a_template(res, admin_template);
+                    //render_form.a_template(res, admin_template);
                 });
             }
             else if (Object.keys(query)[0] == "d_order") {
                 db.delete_order_id(query.d_order, function () {
-                    render_form.a_template(res, admin_template);
+                    //render_form.a_template(res, admin_template);
                 });
             }
 
@@ -91,7 +115,7 @@ server.on('request', function (req, res) {
     }
     else if (req.url == '/select' && req.method == 'POST') {
         req.data = "";
-        // ƒtƒH[ƒ€‚©‚ç‚Ìƒf[ƒ^‚ğóM
+        // ï¿½tï¿½Hï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½M
         req.on("readable", function () {
             req.data += req.read() || '';
             //console.log(req.data);
@@ -120,7 +144,7 @@ server.on('request', function (req, res) {
                     var date_id = m.format("YYYYMMDDHHmmss");
                     db.set_check(query.name, query.unpaid, query.unpaid_sum, date_id, function (checks) {
                 //console.log(date);
-                    render_form.p_template(query.name, prices, orders, date, dates,unpaid_sum,checks,res, price_template);
+                    
                 }); 
                }); 
             }); 
@@ -130,7 +154,7 @@ server.on('request', function (req, res) {
     }
     else if (req.url == '/finish' && req.method == 'POST') {
         req.data = "";
-        // ƒtƒH[ƒ€‚©‚ç‚Ìƒf[ƒ^‚ğóM
+        // ï¿½tï¿½Hï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½M
         req.on("readable", function () {
             req.data += req.read() || '';
             //console.log(req.data);
@@ -152,7 +176,7 @@ server.on('request', function (req, res) {
                 db.get_all_orders(function (order_id) {
                     db.add_order(query.name, sum, order_id + 1, date, function () {
                         db.get_orders(query.name, date, function (orders) {
-                            render_form.f_template(query.name, sum, orders, res, finish_template);
+                            //render_form.f_template(query.name, sum, orders, res, finish_template);
                         });
                     });
 
@@ -160,7 +184,7 @@ server.on('request', function (req, res) {
                 });
             }
             else {
-                render_form.template(query, res, order_error_template);
+                //render_form.template(query, res, order_error_template);
             }
         });
         });
@@ -169,6 +193,6 @@ server.on('request', function (req, res) {
         msg = 'page not found';
 
     }
-});
+});*/
 
-server.listen(config.port,config.ip);
+
