@@ -166,16 +166,18 @@ exports.get_all_orders = function (callback) {
 
 
 
-exports.add_order = function (name, price, order_id,date,callback) {
+exports.add_order = function (name, price,callback) {
     setTimeout(function () {
         var client = new pg.Client(config.constring);
+        var date = moment().format("YYYYMMDD");
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
+                callback(err);
             }
-            client.query("INSERT INTO  orders(name,price,date,order_id,paid) values($1,$2,$3,$4,0)", [name, price,date, order_id], function (err, result) {
-                //console.log(text);
-                callback();
+            client.query("INSERT INTO  orders(name,price,date,order_id,paid) values($1,$2,$3,(SELECT MAX(order_id) FROM orders)+1,0)", [name, price,date], function (err, result) {
+                //console.log(result.rows[0]);
+                callback(result.rows[0]);
                 client.end();
 
             });
@@ -185,29 +187,24 @@ exports.add_order = function (name, price, order_id,date,callback) {
     }, 0);
 }
 
-exports.set_order_paid = function (name,paid,callback) {
+exports.set_order_paid = function (name,unpaid_sum,callback) {
     setTimeout(function () {
         var client = new pg.Client(config.constring);
-        var unpaid_sum = 0;
         var today = 0;
-        if (paid == 1) {
-            today = moment().format("YYYYMMDD");
-        }
+        today = moment().format("YYYYMMDD");
+        var date_id=moment().format("YYYYMMDDmmss");
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
             }
             client.query("UPDATE orders SET paid=$1 where name=$2 and paid=0", [today,name],function (err) {
-                //console.log(text);
-                client.query("SELECT price from orders where name=$1 and paid=0", [name], function (err, result) {
-                    for (i = 0; i < result.rows.length;i++){
-                        unpaid_sum += result.rows[i].price;
-                    }
-                    //console.log(result.rows);
-                callback(unpaid_sum);
+                client.query("INSERT INTO checks VALUES($1,$2,$3,$4)", [date_id,name,unpaid_sum,today], function (err,result) {
+                //console.log(result.rows);
+                callback(result.rows[0]);
                 client.end();
-                });
             });
+        });
+   
         });
 
 
@@ -249,7 +246,7 @@ exports.add_price = function (price, callback) {
             }
             client.query("INSERT INTO  prices(price,freq) values($1,0)", [price], function (err, result) {
                 //console.log(text);
-                callback();
+                callback(result.rows[0]);
                 client.end();
 
             });
@@ -289,7 +286,7 @@ exports.add_name = function (name, callback) {
             }
             client.query("INSERT INTO  lab_members(name) values($1)", [name], function (err, result) {
                 //console.log(text);
-                callback();
+                callback(result.rows[0]);
                 client.end();
 
             });

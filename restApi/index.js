@@ -82,11 +82,11 @@ app.get('/api/unpaid/:memberName', (req, res) => {
 //メンバー追加
 app.get('/api/add/name/:memberName', (req, res) => {
     db.add_name(req.params.memberName,function (err) {
-        if(err){
-            res.send('500')
+        if(err==1){
+            res.send('200')
         }
         else{
-            res.send('200')
+            res.send('500')
         }
     });
 }); 
@@ -94,18 +94,46 @@ app.get('/api/add/name/:memberName', (req, res) => {
 //値段追加
 app.get('/api/add/price/:price', (req, res) => {
     db.add_price(req.params.price,function (err) {
-        if(err){
-            res.send('500')
+        if(err==1){
+            res.send('200')
         }
         else{
-            res.send('200')
+            res.send('500')
         }
     });
 }); 
 
 //Update
 //orderを取る
+app.get('/api/update/order/:memberName/:price', (req, res) => {
+    db.add_order(req.params.memberName,req.params.price,function (err) {
+        if(err==1){
+            res.send('200')
+        }
+        else{
+            res.send('500')
+        }
+    });
+}); 
 
+//清算を実施する
+app.get('/api/update/check/:memberName', (req, res) => {
+    db.get_unpaidsum(req.params.memberName,function (unpaid_sum){
+        if(unpaid_sum==0){
+            res.send('200')
+        }
+        else{
+    db.set_order_paid(req.params.memberName,unpaid_sum,function (err) {
+        if(err>=1){
+            res.send('200')
+        }
+        else{
+            res.send('500')
+        }
+    });
+}
+});
+}); 
 
 /*
 server.on('request', function (req, res) {
