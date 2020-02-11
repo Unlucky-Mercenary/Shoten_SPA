@@ -192,14 +192,14 @@ exports.set_order_paid = function (name,unpaid_sum,callback) {
         var client = new pg.Client(config.constring);
         var today = 0;
         today = moment().format("YYYYMMDD");
-        var date_id=moment().format("YYYYMMDDmmss");
+        var date_id=moment().format("YYYYMMDDhhmmss");
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
             }
             client.query("UPDATE orders SET paid=$1 where name=$2 and paid=0", [today,name],function (err) {
                 client.query("INSERT INTO checks VALUES($1,$2,$3,$4)", [date_id,name,unpaid_sum,today], function (err,result) {
-                //console.log(result.rows);
+                console.log(result.rows[0]);
                 callback(result.rows[0]);
                 client.end();
             });
