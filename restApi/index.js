@@ -35,7 +35,7 @@ app.use(session({
 
 //READ
 //値段を参照するAPI
-app.get('/api/prices', (req, res) => {
+app.get('/api/price', (req, res) => {
     var members = [];
     db.get_prices(function (price) {
         //console.log(members);
@@ -55,7 +55,7 @@ app.get('/api/members', (req, res) => {
 }); 
 
 //購入履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
-app.get('/api/orders/:memberName/:date', (req, res) => {
+app.get('/api/order/:memberName/:date', (req, res) => {
     var orders = [];
     db.get_orders(req.params.memberName, req.params.date, function (orders) {
         res.json(orders);
@@ -63,7 +63,7 @@ app.get('/api/orders/:memberName/:date', (req, res) => {
 }); 
 
 //清算履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
-app.get('/api/checks/:memberName/:date', (req, res) => {
+app.get('/api/check/:memberName/:date', (req, res) => {
     var checks = [];
     db.get_checks(req.params.memberName, req.params.date, function (checks) {
         res.json(checks);
@@ -71,29 +71,29 @@ app.get('/api/checks/:memberName/:date', (req, res) => {
 }); 
 
 //未清算額を参照するAPI
-app.get('/api/unpaid/:memberName', (req, res) => {
+app.get('/api/check/unpaid/:memberName', (req, res) => {
     var unpaid_sum=0;
     db.get_unpaidsum(req.params.memberName,function (unpaid_sum){
         res.json(unpaid_sum);
    }); 
 }); 
 
-//Create(POSTで実装すべきだが面倒なのでGetで行う)
+//Create
 //メンバー追加
-app.get('/api/add/name/:memberName', (req, res) => {
-    db.add_name(req.params.memberName,function (err) {
+app.post('/api/add/member/', (req, res) => {
+    db.add_name(req.body.memberName,function (err) {
         if(err==1){
             res.send('200')
         }
         else{
-            res.send('500')
+            res.send('405')
         }
     });
 }); 
 
 //値段追加
-app.get('/api/add/price/:price', (req, res) => {
-    db.add_price(req.params.price,function (err) {
+app.post('/api/add/price/', (req, res) => {
+    db.add_price(req.body.price,function (err) {
         if(err==1){
             res.send('200')
         }
@@ -105,8 +105,8 @@ app.get('/api/add/price/:price', (req, res) => {
 
 //Update
 //orderを取る
-app.get('/api/update/order/:memberName/:price', (req, res) => {
-    db.add_order(req.params.memberName,req.params.price,function (err) {
+app.post('/api/update/order/', (req, res) => {
+    db.add_order(req.body.memberName,req.body.price,function (err) {
         if(err==1){
             res.send('200')
         }
@@ -117,13 +117,13 @@ app.get('/api/update/order/:memberName/:price', (req, res) => {
 }); 
 
 //清算を実施する
-app.get('/api/update/check/:memberName', (req, res) => {
-    db.get_unpaidsum(req.params.memberName,function (unpaid_sum){
+app.post('/api/update/check/', (req, res) => {
+    db.get_unpaidsum(req.body.memberName,function (unpaid_sum){
         if(unpaid_sum==0){
             res.send('200')
         }
         else{
-    db.set_order_paid(req.params.memberName,unpaid_sum,function (err) {
+    db.set_order_paid(req.body.memberName,unpaid_sum,function (err) {
         if(err>=1){
             res.send('200')
         }
