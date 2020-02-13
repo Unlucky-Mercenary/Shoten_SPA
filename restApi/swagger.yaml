@@ -52,7 +52,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "memberName"
         in: "formData"
         description: "Add name of the member"
         required: true

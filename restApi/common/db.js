@@ -246,7 +246,7 @@ exports.add_price = function (price, callback) {
             }
             client.query("INSERT INTO  prices(price,freq) values($1,0)", [price], function (err, result) {
                 //console.log(text);
-                callback(result.rows[0]);
+                callback();
                 client.end();
 
             });
@@ -284,9 +284,9 @@ exports.add_name = function (name, callback) {
                 console.err('could not connect to postgres', err);
                 callback(err);
             }
-            client.query("INSERT INTO  lab_members(name) values($1)", [name], function (err, result) {
+            client.query("INSERT INTO  lab_members(name) values($1)", [name], function (err) {
                 //console.log(text);
-                callback(result.rows[0]);
+                callback();
                 client.end();
 
             });

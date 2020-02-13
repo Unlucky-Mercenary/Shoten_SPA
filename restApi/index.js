@@ -9,6 +9,8 @@ var render_form = require('./common/render_form');
 var session = require('express-session');
 var express = require('express');
 var moment = require('moment');
+var cors = require('cors');
+const bodyParser = require('body-parser');
 
 var msg;
 var posts = [];
@@ -20,7 +22,11 @@ var posts = [];
 var app = express();
 var member_id=[];
 app.listen(config.port,config.ip);
-
+app.use(cors());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 app.use(session({
     secret: 'session',
     resave: false,
@@ -49,8 +55,9 @@ app.get('/api/members', (req, res) => {
     var members = [];
     db.get_members(function (members) {
         //console.log(members);
-        res.header("Content-Type", "application/json; charset=utf-8");
+        res.set("Content-Type", "application/json; charset=utf-8");
         res.json(members);
+        //res.json("{ name: '長谷川' }");
     });  
 }); 
 
@@ -81,12 +88,12 @@ app.get('/api/check/unpaid/:memberName', (req, res) => {
 //Create
 //メンバー追加
 app.post('/api/add/member/', (req, res) => {
-    db.add_name(req.body.memberName,function (err) {
-        if(err==1){
-            res.send('200')
+    db.add_name(req.body.name,function (err) {
+        if(err){
+            res.send('400')
         }
         else{
-            res.send('405')
+            res.send('200')
         }
     });
 }); 
@@ -94,11 +101,11 @@ app.post('/api/add/member/', (req, res) => {
 //値段追加
 app.post('/api/add/price/', (req, res) => {
     db.add_price(req.body.price,function (err) {
-        if(err==1){
-            res.send('200')
+        if(err){
+            res.send('405')
         }
         else{
-            res.send('500')
+            res.send('200')
         }
     });
 }); 
