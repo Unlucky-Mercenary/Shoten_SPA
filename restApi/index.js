@@ -62,25 +62,39 @@ app.get('/api/members', (req, res) => {
 }); 
 
 //購入履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
-app.get('/api/order/:memberName/:date', (req, res) => {
+app.get('/api/order/:name/date/:date', (req, res) => {
     var orders = [];
-    db.get_orders(req.params.memberName, req.params.date, function (orders) {
+    db.get_orders(req.params.name, req.params.date, function (orders) {
+
         res.json(orders);
    }); 
 }); 
 
+//購入履歴の合計
+app.get('/api/order/sum/:name/date/:date', (req, res) => {
+    var orders = [];
+    var temp=0;
+    db.get_orders(req.params.name, req.params.date, function (orders) {
+        for (i = 0; i < orders.length;i++){
+            temp += orders[i].price;
+        }
+        var sum={"sum":temp};
+        res.json(sum);
+   }); 
+}); 
+
 //清算履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
-app.get('/api/check/:memberName/:date', (req, res) => {
+app.get('/api/check/:name/date/:date', (req, res) => {
     var checks = [];
-    db.get_checks(req.params.memberName, req.params.date, function (checks) {
+    db.get_checks(req.params.name, req.params.date, function (checks) {
         res.json(checks);
    }); 
 }); 
 
 //未清算額を参照するAPI
-app.get('/api/check/unpaid/:memberName', (req, res) => {
+app.get('/api/check/unpaid/:name', (req, res) => {
     var unpaid_sum=0;
-    db.get_unpaidsum(req.params.memberName,function (unpaid_sum){
+    db.get_unpaidsum(req.params.name,function (unpaid_sum){
         res.json(unpaid_sum);
    }); 
 }); 
@@ -113,25 +127,25 @@ app.post('/api/add/price/', (req, res) => {
 //Update
 //orderを取る
 app.post('/api/update/order/', (req, res) => {
-    db.add_order(req.body.memberName,req.body.price,function (err) {
-        if(err==1){
-            res.send('200')
+    db.add_order(req.body.name,req.body.price,function (err) {
+        if(err){
+            res.send('500')
         }
         else{
-            res.send('500')
+            res.send('200')
         }
     });
 }); 
 
 //清算を実施する
 app.post('/api/update/check/', (req, res) => {
-    db.get_unpaidsum(req.body.memberName,function (unpaid_sum){
+    db.get_unpaidsum(req.body.name,function (unpaid_sum){
         if(unpaid_sum==0){
             res.send('200')
         }
         else{
-    db.set_order_paid(req.body.memberName,unpaid_sum,function (err) {
-        if(err>=1){
+    db.set_order_paid(req.body.name,unpaid_sum,function (err) {
+        if(err){
             res.send('200')
         }
         else{
@@ -141,6 +155,68 @@ app.post('/api/update/check/', (req, res) => {
 }
 });
 }); 
+
+//メンバーをdelete
+app.delete('/api/delete/member/:name', (req, res) => {
+    var orders = [];
+    db.delete_name(req.params.name, function (err) {
+        if(err){
+            res.send('404')
+        }
+        else{
+            res.send('200')
+        }
+   }); 
+}); 
+
+//priceをdelete
+app.delete('/api/delete/price/:price', (req, res) => {
+    db.delete_price(req.params.price, function (err) {
+        if(err){
+            res.send('404')
+        }
+        else{
+            res.send('200')
+        }
+   }); 
+}); 
+
+//全てのオーダーをdelete
+app.delete('/api/delete/order/all/:name', (req, res) => {
+    db.delete_order(req.params.name, function (err) {
+        if(err){
+            res.send('404')
+        }
+        else{
+            res.send('200')
+        }
+   }); 
+}); 
+
+//一部のオーダーをdelete
+app.delete('/api/delete/order/:orderId', (req, res) => {
+    db.delete_order_id(req.params.orderId, function (err) {
+        if(err){
+            res.send('404')
+        }
+        else{
+            res.send('200')
+        }
+   }); 
+}); 
+
+
+app.delete('/api/delete/check/:name', (req, res) => {
+    db.delete_checks(req.params.name, function (err) {
+        if(err){
+            res.send('404')
+        }
+        else{
+            res.send('200')
+        }
+   }); 
+}); 
+
 
 /*
 server.on('request', function (req, res) {

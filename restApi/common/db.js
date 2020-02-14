@@ -125,7 +125,7 @@ exports.get_unpaidsum = function (name,callback) {
                     for (i = 0; i < result.rows.length;i++){
                         unpaid_sum += result.rows[i].price;
                     }
-                    //console.log(result.rows);
+                //console.log(result.rows);
                 callback(unpaid_sum);
                 client.end();
                 });
@@ -263,6 +263,7 @@ exports.delete_price = function (price, callback) {
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
+                callback(err)
             }
             client.query("DELETE FROM  prices where price=$1", [price], function (err, result) {
                 //console.log(text);
@@ -302,6 +303,7 @@ exports.delete_name = function (name, callback) {
         client.connect(function (err) {
             if (err) {
                 console.err('could not connect to postgres', err);
+                callback(err);
             }
             client.query("DELETE FROM lab_members where name=$1", [name], function (err, result) {
                 //console.log(text);
