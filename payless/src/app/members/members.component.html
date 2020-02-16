@@ -1,13 +1,14 @@
+<div class="container" fxLayout="row" fxLayoutAlign="space-between" >
+<div class= "item item1">
 <h2>Lab Members</h2>
-
 <ul class="members">
-  <li *ngFor="let member of members">
-    <nav>
-    <a routerLink="/detail/{{member.name}}">
+  <li *ngFor="let member of members" [class.selected]="member === selectedMember"
+  (click)="onSelect(member)">
       {{member.name}}
-    </a>
-    </nav>
   </li>
 </ul>
+</div>
+<div class= "item item2" >
 
-<app-member-page [member]="selectedMember"></app-member-detail>
+</div>
+</div>

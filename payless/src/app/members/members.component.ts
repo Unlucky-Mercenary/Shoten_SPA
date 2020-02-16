@@ -9,6 +9,7 @@ import { Member } from './member';
 })
 export class MembersComponent implements OnInit {
   members:Member[];
+  selectedMember:Member;
   constructor(private memberService:MemberService) { }
   
   ngOnInit(){
@@ -20,6 +21,10 @@ export class MembersComponent implements OnInit {
       .subscribe(res => {
         this.members= res;
       });
+  }
+
+  onSelect(member: Member): void {
+    this.selectedMember = member;
   }
 
 }

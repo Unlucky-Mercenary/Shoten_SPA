@@ -1,0 +1,8 @@
+<mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a *ngFor="let member of members" mat-list-item routerLink="/order/{{member.name}}">{{member.name}}</a>
+      <a mat-list-item href="/Create">Create Account</a>
+      <a mat-list-item href="/Settings">Settings</a>
+    </mat-nav-list>
+
+  

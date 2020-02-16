@@ -1,0 +1,9 @@
+<div *ngIf="member">
+    <h2>{{member.name | uppercase}} Details</h2>
+    <div>
+      <label>name:
+        {{member.name}}
+      </label>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" (click)="goBack()">go back</button>

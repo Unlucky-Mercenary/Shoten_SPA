@@ -21,6 +21,15 @@
     background-color: #DDD;
     left: .1em;
   }
+
+  .members li.selected {
+    background-color: #CFD8DC;
+    color: white;
+  }
+  .members li.selected:hover {
+    background-color: #BBD8DC;
+    color: white;
+  }
   
   .members a {
     color: #888;
@@ -88,6 +97,8 @@
     width: 12em;
   }
   
+
+
   
   /*
   Copyright Google LLC. All Rights Reserved.
