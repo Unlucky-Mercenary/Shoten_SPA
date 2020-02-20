@@ -1,0 +1,11 @@
+.mat-slider-horizontal {
+    width: 500px;
+    display: inline-block;
+  }
+
+
+.price {
+  display: inline-block;
+  width: 100px;
+  font-size: 30px;
+}

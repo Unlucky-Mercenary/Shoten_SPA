@@ -10,18 +10,14 @@ import { Member } from './../members/member';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent {
-  members:Member[];
-  selectedMember:Member;
-  ngOnInit(){
-    this.getMemberList();
-  }
 
-  getMemberList(): void {
-    this.memberService.getMemberList()
-      .subscribe(res => {
-        this.members= res;
-      });
+export class SidebarComponent {
+  
+  members =this.memberService.members$;
+  constructor(private breakpointObserver: BreakpointObserver,private memberService:MemberService) {}
+  
+  ngOnInit(){
+    this.memberService.getMemberList();
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -30,6 +26,6 @@ export class SidebarComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,private memberService:MemberService) {}
+ 
 
 }

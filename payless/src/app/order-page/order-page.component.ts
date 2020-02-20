@@ -1,37 +1,28 @@
-import { Component, OnInit,OnChanges } from '@angular/core';
+import { Component, OnInit,OnDestroy, EventEmitter  } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import {Member} from '../members/member';
-import {TimeBackService} from '../service/time-back.service'
-import { Observable } from 'rxjs';
-import { interval } from 'rxjs';
+import {TimeBackService} from '../service/time-back.service';
+import { OrderPageUsecaseService } from '../service/order-page-usecase.service';
 
 @Component({
   selector: 'app-order-page',
   templateUrl: './order-page.component.html',
   styleUrls: ['./order-page.component.css']
 })
-export class OrderPageComponent implements OnInit,OnChanges {
-  private timeout=300000;
-  member: Member;
-  BackCounter = interval(this.timeout);
+export class OrderPageComponent implements OnDestroy {
 
-  constructor(private route: ActivatedRoute,
-    private location: Location,private timeBackService: TimeBackService) { }
+  member$= this.orderPageUsecase.member$;
 
-  ngOnInit(): void {
-    this.getMember();
-    this.BackCounter.subscribe(()=> this.timeBackService.pageChange());
-  }
-  ngOnChanges(): void{
-    this.getMember();
+  private onDestroy$ = new EventEmitter();
+
+  constructor(private route: ActivatedRoute,private timeBackService: TimeBackService
+    ,private orderPageUsecase:OrderPageUsecaseService) { 
+     this.orderPageUsecase.subscribeRouteChanges(this.route,this.onDestroy$,this.timeBackService);
+    }
+
+  ngOnDestroy(): void{
+    this.onDestroy$.complete();
   }
 
-  getMember(): void {
-    //this.member.name=this.route.snapshot.paramMap.get('name');
-    const { snapshot } = this.route;
-    this.member={"name":snapshot.params.name}; 
-  }
   goBack(): void {
     this.timeBackService.pageChange();
   }

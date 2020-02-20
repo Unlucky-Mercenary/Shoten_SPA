@@ -15,6 +15,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { PriceListComponent } from './price-list/price-list.component';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTabsModule} from '@angular/material/tabs';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+
 
 
 @NgModule({
@@ -23,7 +31,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     MembersComponent,
     MemberPageComponent,
     OrderPageComponent,
-    SidebarComponent
+    SidebarComponent,
+    PriceListComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +46,11 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatSliderModule,
+    MatListModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
