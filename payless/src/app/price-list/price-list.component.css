@@ -1,11 +1,28 @@
+
+.item2 {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0.5em;
+}
+
+.item3 {
+  display: inline-block;
+
+  height: 10px;
+  margin-left: 3em;
+}
+
 .mat-slider-horizontal {
-    width: 500px;
+    width: 70%;
     display: inline-block;
+    margin-left:5%;
   }
 
 
 .price {
   display: inline-block;
-  width: 100px;
+  width: 5%;
   font-size: 30px;
+  margin-left:2%;
 }

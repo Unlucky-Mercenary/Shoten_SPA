@@ -1,1 +1,21 @@
-<p>dashboard works!</p>
+
+<ng-container *ngIf="member$ | async as member; else userFetching" >
+    <nav mat-tab-nav-bar color="primary">
+      <a mat-tab-link routerLink="/order/{{member.name}}"
+      [active]=false>
+        Order
+      </a>
+      <a mat-tab-link routerLink="/dashboard/{{member.name}}"
+      [active]=true>
+        Dashboard
+      </a>
+    </nav>
+    <router-outlet></router-outlet>
+      <h2>{{member.name | uppercase}} 's Page</h2>
+    </ng-container>
+
+    <ng-template #userFetching>
+        <div>Fetching...</div>
+        <mat-spinner></mat-spinner>
+      </ng-template>
+    <button mat-raised-button color="primary" (click)="goBack()">Top Page</button>

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 
@@ -50,7 +53,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatListModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatTabsModule
+    MatTabsModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

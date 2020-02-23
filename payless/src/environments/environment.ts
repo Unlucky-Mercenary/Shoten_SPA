@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000/api',
+  apiUrl: 'http://192.168.10.115:5000/api',
   waitLongTime:300000
 };
 

@@ -27,6 +27,7 @@ export class OrderPageUsecaseService {
         // nameが変わったときだけ値を流す
         distinctUntilChanged(),
       ).subscribe(name => {
+        console.log("よばれたよ");
         this._member$.next({"name":name}); 
         timeBackservice.pageChangeWait(environment.waitLongTime);
       }

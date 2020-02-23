@@ -21,6 +21,8 @@ export class OrderPageComponent implements OnDestroy {
 
   ngOnDestroy(): void{
     this.onDestroy$.complete();
+    console.log("デストロイ！");
+    
   }
 
   goBack(): void {

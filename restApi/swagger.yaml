@@ -48,21 +48,22 @@ paths:
       description: ""
       operationId: "updateMember"
       consumes:
-      - "application/x-www-form-urlencoded"
+      - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
-        in: "formData"
+      - in: "body"
+        name: "name"
         description: "Add name of the member"
         required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/Member"
       responses:
         200:
           description: "Success"
         405:
           description: "Invalid input"
-  /delete/member/{memberName}:
+  /delete/member/{name}:
     delete:
       tags:
       - "member"
@@ -73,9 +74,9 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
-        description: "memberName to delete"
+        description: "name to delete"
         required: true
         type: "string"
       responses:
@@ -109,15 +110,16 @@ paths:
       description: ""
       operationId: "updatePetWithForm"
       consumes:
-      - "application/x-www-form-urlencoded"
+      - "application/json"
       produces:
       - "application/json"
       parameters:
       - name: "price"
-        in: "formData"
-        description: "Add name of the member"
+        in: "body"
+        description: "Add price"
         required: true
-        type: "integer"
+        schema:
+          $ref: "#/definitions/Price"
       responses:
         200:
           description: "Success"
@@ -144,7 +146,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Pet not found"
-  /check/{memberName}/{date}:
+  /check/{name}/date/{date}:
     get:
       tags:
       - "check"
@@ -154,9 +156,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
-        description: "memberName"
+        description: "name"
         required: true
         type: "string"
       - name: "date"
@@ -173,7 +175,7 @@ paths:
               $ref: "#/definitions/Check"
         400:
           description: "Invalid status value"
-  /check/unpaid/{memberName}:
+  /check/unpaid/{name}:
     get:
       tags:
       - "check"
@@ -183,9 +185,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
-        description: "memberName"
+        description: "name"
         required: true
         type: "string"
       responses:
@@ -205,21 +207,20 @@ paths:
       description: ""
       operationId: "updateCheck"
       consumes:
-      - "application/x-www-form-urlencoded"
+      - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
-        in: "formData"
-        description: "Add name of the member"
-        required: true
-        type: "string"
+      - name: "body"
+        in: "body"
+        schema:
+          $ref: "#/definitions/Member"
       responses:
         200:
           description: "Success"
         405:
           description: "Invalid input"
-  /delete/check/{memberName}:
+  /delete/check/{name}:
     delete:
       tags:
       - "check"
@@ -230,7 +231,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
         description: "check to delete"
         required: true
@@ -240,7 +241,7 @@ paths:
           description: "check supplied"
         404:
           description: "check not found"
-  /order/{memberName}/{date}:
+  /order/{name}/date/{date}:
     get:
       tags:
       - "order"
@@ -250,9 +251,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
-        description: "memberName"
+        description: "name"
         required: true
         type: "string"
       - name: "date"
@@ -269,7 +270,7 @@ paths:
               $ref: "#/definitions/Order"
         400:
           description: "Invalid status value"
-  /order/sum/{memberName}/{date}:
+  /order/sum/{name}/date/{date}:
     get:
       tags:
       - "order"
@@ -279,9 +280,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
-        description: "memberName"
+        description: "name"
         required: true
         type: "string"
       - name: "date"
@@ -306,26 +307,20 @@ paths:
       description: ""
       operationId: "updateOrder"
       consumes:
-      - "application/x-www-form-urlencoded"
+      - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "memberName"
-        in: "formData"
-        description: "Add name of the member"
-        required: true
-        type: "string"
-      - name: "price"
-        in: "formData"
-        description: "price"
-        required: true
-        type: "integer"  
+      - name: "name"
+        in: "body"
+        schema:
+          $ref: "#/definitions/PostOrder"
       responses:
         200:
           description: "Success"
         405:
           description: "Invalid input"
-  /delete/order/{memberName}:
+  /delete/order/all/{name}:
     delete:
       tags:
       - "order"
@@ -336,7 +331,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "memberName"
+      - name: "name"
         in: "path"
         description: "check to delete"
         required: true
@@ -346,7 +341,7 @@ paths:
           description: "check supplied"
         404:
           description: "check not found"
-  /delete/order/{memberName}/{orderId}:
+  /delete/order/{orderId}:
     delete:
       tags:
       - "order"
@@ -357,16 +352,11 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "memberName"
-        in: "path"
-        description: "check to delete"
-        required: true
-        type: "string"
       - name: "orderId"
         in: "path"
         description: "check to delete"
         required: true
-        type: "string"  
+        type: "integer"  
       responses:
         400:
           description: "check supplied"
@@ -437,7 +427,6 @@ definitions:
     type: "object"
     required:
       - "price"
-      - "freq"
     properties:
       price:
         type: "integer"
@@ -445,6 +434,17 @@ definitions:
       freq:
         type: "integer"
         example: "0"
+  PostOrder:
+    type: "object"
+    required:
+      - "price"
+    properties:
+      name:
+        type: "string"
+        example: "sato"
+      price:
+        type: "integer"
+        example: "110"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
