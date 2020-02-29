@@ -2,6 +2,7 @@ import { Component, OnInit,OnDestroy, EventEmitter  } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {TimeBackService} from '../service/time-back.service';
 import { OrderPageUsecaseService } from '../service/order-page-usecase.service';
+import { PriceService } from '../service/price.service';
 
 @Component({
   selector: 'app-order-page',
@@ -15,8 +16,8 @@ export class OrderPageComponent implements OnDestroy {
   private onDestroy$ = new EventEmitter();
 
   constructor(private route: ActivatedRoute,private timeBackService: TimeBackService
-    ,private orderPageUsecase:OrderPageUsecaseService) { 
-     this.orderPageUsecase.subscribeRouteChanges(this.route,this.onDestroy$,this.timeBackService);
+    ,private orderPageUsecase:OrderPageUsecaseService,private priceservice: PriceService) { 
+     this.orderPageUsecase.subscribeRouteChanges(this.route,this.onDestroy$,this.timeBackService,this.priceservice);
     }
 
   ngOnDestroy(): void{

@@ -5,6 +5,7 @@ import { takeUntil, map, distinctUntilChanged } from 'rxjs/operators';
 import { Member } from '../members/member';
 import { TimeBackService } from './time-back.service';
 import { environment } from 'src/environments/environment';
+import { PriceService } from './price.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class OrderPageUsecaseService {
   }
 
 
-  subscribeRouteChanges(route: ActivatedRoute, untilObservable: Observable<any>,timeBackservice: TimeBackService) {
+  subscribeRouteChanges(route: ActivatedRoute, untilObservable: Observable<any>,timeBackservice: TimeBackService,priceservice: PriceService) {
     route.params.pipe(    
     // コンポーネントの破棄と同時に停止する
         takeUntil(untilObservable),
@@ -27,8 +28,8 @@ export class OrderPageUsecaseService {
         // nameが変わったときだけ値を流す
         distinctUntilChanged(),
       ).subscribe(name => {
-        console.log("よばれたよ");
         this._member$.next({"name":name}); 
+        priceservice.resetprice$();
         timeBackservice.pageChangeWait(environment.waitLongTime);
       }
       );

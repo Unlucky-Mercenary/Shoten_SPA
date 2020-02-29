@@ -13,6 +13,14 @@
   margin-left: 3em;
 }
 
+.reset {
+  display: inline-block;
+
+  height: 10px;
+  margin-right: 1em;
+}
+
+
 .mat-slider-horizontal {
     width: 70%;
     display: inline-block;

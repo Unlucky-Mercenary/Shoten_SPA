@@ -12,6 +12,7 @@ export class UnpaidSumService {
 
   getUnpaidSum(name: string): Observable<any> {
     return this.http.get(environment.apiUrl + '/check/unpaid/'+name);
+    
 }
 
 }
