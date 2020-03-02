@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable,BehaviorSubject } from 'rxjs';
+import { Observable,BehaviorSubject, Subscription } from 'rxjs';
 import { takeUntil, map, distinctUntilChanged } from 'rxjs/operators';
 import { Member } from '../members/member';
 import { TimeBackService } from './time-back.service';
@@ -28,9 +28,9 @@ export class OrderPageUsecaseService {
         // nameが変わったときだけ値を流す
         distinctUntilChanged(),
       ).subscribe(name => {
+        //console.log("よばれたよ11");
         this._member$.next({"name":name}); 
         priceservice.resetprice$();
-        timeBackservice.pageChangeWait(environment.waitLongTime);
       }
       );
   }

@@ -177,7 +177,7 @@ exports.add_order = function (name, price,callback) {
             }
             client.query("INSERT INTO  orders(name,price,date,order_id,paid) values($1,$2,$3,(SELECT MAX(order_id) FROM orders)+1,0)", [name, price,date], function (err, result) {
                 //console.log(result.rows[0]);
-                callback(result.rows[0]);
+                callback();
                 client.end();
 
             });

@@ -4,13 +4,18 @@ import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
 import { StoreService } from './store.service';
 import { Price } from '../price-list/price';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PriceService {
   constructor(private http: HttpClient,private store:StoreService) { }
-
+  private HTTP_OPTIONS = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json; charset=UTF-8'
+    })
+  };
   get prices$(){
     return this.store.select(state =>
       state.priceList.items);
@@ -58,6 +63,12 @@ export class PriceService {
     prices.subscribe((price)=>{
       this.store.update((state)=>({...state,priceList:{...state.priceList,items:price}}));
     });
-}
+  }
+
+  doOrder(name:String,q_sum:Number): Observable<any> {
+      let order={"name":name,"price":q_sum};
+      return this.http.post<any>(environment.apiUrl + '/update/order',order, this.HTTP_OPTIONS);
+    }
+
 
 }

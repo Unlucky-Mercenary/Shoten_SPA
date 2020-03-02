@@ -5,6 +5,8 @@ import { OrderPageUsecaseService } from '../service/order-page-usecase.service';
 import { MatSlider } from '@angular/material/slider';
 import {MatSliderHarness} from '@angular/material/slider/testing';
 import { StoreService } from '../service/store.service';
+import { mergeMap, flatMap } from 'rxjs/operators';
+import { TimeBackService } from '../service/time-back.service';
 
 
 @Component({
@@ -30,7 +32,7 @@ export class PriceListComponent implements OnInit {
   };
   
 
-  constructor(private priceService : PriceService,private orderPageUsecase:OrderPageUsecaseService) { 
+  constructor(private priceService : PriceService,private orderPageUsecase:OrderPageUsecaseService,private timeBack:TimeBackService) { 
     
   }
 
@@ -40,6 +42,13 @@ export class PriceListComponent implements OnInit {
 
   getValue(){
     return this.value;
+  }
+
+  doOrder(name,price)
+  {
+    this.priceService.doOrder(name,price).subscribe(()=>{
+      this.timeBack.pageChange();
+    });
   }
 
   reset(){
