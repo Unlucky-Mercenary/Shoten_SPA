@@ -64,6 +64,8 @@ app.get('/api/members', (req, res) => {
 //購入履歴を参照するAPI(dateはYYYYMMDDの方式で ex.20190801)
 app.get('/api/order/:name/date/:date', (req, res) => {
     var orders = [];
+    console.log(req.params.name);
+    console.log(req.params.date);
     db.get_orders(req.params.name, req.params.date, function (orders) {
 
         res.json(orders);
@@ -218,144 +220,19 @@ app.delete('/api/delete/check/:name', (req, res) => {
 }); 
 
 
-/*
-server.on('request', function (req, res) {
-
-    //�}�b�s���O
-    app.get(req.url == '/api/members' && req.method == 'GET') {
-        var members = [];
-        db.get_members(function (members) {
-            console.log(members);
-            res.send('members');
-        });  
-    }
-    if (req.url == '/admin' && req.method == 'GET') {
-            render_form.a_template(res,admin_template);
-    }
-    else if (req.url == '/admin' && req.method == 'POST') {
-        req.data = "";
-        // �t�H�[������̃f�[�^����M
-        req.on("readable", function () {
-            req.data += req.read() || '';
-            //console.log(req.data);
-        });
-        req.on("end", function () {
-            var query = qs.parse(req.data);
-            if (Object.keys(query)[0] == "name") {
-                db.add_name(query.name,function () {
-                    //console.log(date);
-                    //render_form.a_template(res, admin_template);
-                });
-            }
-            else if (Object.keys(query)[0] == "price") {
-                db.add_price(query.price,function () {
-                    //console.log(date);
-                    //render_form.a_template(res, admin_template);
-                });
-            }
-            else if (Object.keys(query)[0] == "d_name") {
-                db.delete_checks(query.d_name, function () {
-                db.delete_order(query.d_name, function () {
-                db.delete_name(query.d_name, function () {
-                    //console.log(date);
-                    //render_form.a_template(res, admin_template);
-                    });
-                    });
-                });
-            }
-            else if (Object.keys(query)[0] == "d_price") {
-                db.delete_price(query.d_price, function () {
-                    //render_form.a_template(res, admin_template);
-                });
-            }
-            else if (Object.keys(query)[0] == "d_order") {
-                db.delete_order_id(query.d_order, function () {
-                    //render_form.a_template(res, admin_template);
-                });
-            }
-
-        });
-    }
-    else if (req.url == '/select' && req.method == 'POST') {
-        req.data = "";
-        // �t�H�[������̃f�[�^����M
-        req.on("readable", function () {
-            req.data += req.read() || '';
-            //console.log(req.data);
-        });
-        req.on("end", function () {
-            var query = qs.parse(req.data);
-            var dates = [];
-            var m = moment();
-            var temp = m.format("YYYYMMDD");
-            
-            if (query.date == 99999999) {
-                var date = moment(temp).startOf('month').format("YYYYMMDD");
-            }
-            else {
-                var date = Number(query.date);
-            }
-            temp = moment(temp).startOf('month').format("YYYYMMDD");
+//日付
+app.get('/api/dates/', (req, res) => {
+    var m = moment();
+    var dates = [];
+    var temp = m.format("YYYYMMDD");
+    var date = moment(temp).startOf('month').format("YYYYMMDD");
             for (i = 0; i < 11; i++){
-                dates.push(temp);
-                temp=moment(temp).subtract(1, "months").format("YYYYMMDD");
-
+                dates.push(date);
+                date=moment(date).subtract(1, "months").format("YYYYMMDD");
             }
-            db.set_order_paid(query.name,query.unpaid,function (unpaid_sum){
-            db.get_prices(function (prices) {
-                db.get_orders(query.name, date, function (orders) {
-                    var date_id = m.format("YYYYMMDDHHmmss");
-                    db.set_check(query.name, query.unpaid, query.unpaid_sum, date_id, function (checks) {
-                //console.log(date);
-                    
-                }); 
-               }); 
-            }); 
-            
-            });
-        });
-    }
-    else if (req.url == '/finish' && req.method == 'POST') {
-        req.data = "";
-        // �t�H�[������̃f�[�^����M
-        req.on("readable", function () {
-            req.data += req.read() || '';
-            //console.log(req.data);
-        });
-        req.on("end", function () {
-            var query = qs.parse(req.data);
-            //req.session.member_id= query.member_id;
-            //posts.push(query.user_name);
-            var m = moment();
-            var date = m.format("YYYYMMDD");
-            db.get_prices(function (prices) {
-                var sum = 0;
-                for (j = 0; j < prices.length; j++) {
-                    price = "p_" + prices[j].price;
-                    a = Number(query[price]);
-                    sum += a;
-                }
-            if (sum!=0) {
-                db.get_all_orders(function (order_id) {
-                    db.add_order(query.name, sum, order_id + 1, date, function () {
-                        db.get_orders(query.name, date, function (orders) {
-                            //render_form.f_template(query.name, sum, orders, res, finish_template);
-                        });
-                    });
+    res.json(dates);
 
-
-                });
-            }
-            else {
-                //render_form.template(query, res, order_error_template);
-            }
-        });
-        });
-    }
-    else {
-        msg = 'page not found';
-
-    }
-});*/
+   
+}); 
 
 

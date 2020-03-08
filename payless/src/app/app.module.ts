@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import {MatNativeDateModule} from '@angular/material/core';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import {MatSliderModule} from '@angular/material/slider';
@@ -24,6 +25,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatBadgeModule} from '@angular/material/badge';
+import { DatePipe } from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import { OrderHistoryComponent } from './dashboard/order-history/order-history.component';
+import {MatTableModule} from '@angular/material/table';
+
 
 
 
@@ -36,7 +43,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     OrderPageComponent,
     SidebarComponent,
     PriceListComponent,
-    DashboardComponent
+    DashboardComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -56,9 +64,14 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatTabsModule,
     MatFormFieldModule,
     FormsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatTableModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
