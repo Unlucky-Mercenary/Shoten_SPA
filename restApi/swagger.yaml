@@ -1,0 +1,450 @@
+swagger: "2.0"
+info:
+  description: "This is a  shoten server."
+  version: "1.0.0"
+  title: "Shoten_lab"
+  termsOfService: "http://swagger.io/terms/"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:5000"
+basePath: "/api"
+tags:
+- name: "member"
+  description: "Operations about member"
+- name: "price"
+  description: "Operations about price"
+- name: "order"
+  description: "Operations about order"
+- name: "check"
+  description: "Operations about check"
+
+schemes:
+- "http"
+paths:
+  /members:
+    get:
+      tags:
+      - "member"
+      summary: "Access to all members"
+      description: "view of all members"
+      operationId: "findMembers"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Member"
+        400:
+          description: "Invalid status value"
+  /add/member:
+    post:
+      tags:
+      - "member"
+      summary: "Add member"
+      description: ""
+      operationId: "updateMember"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "name"
+        description: "Add name of the member"
+        required: true
+        schema:
+          $ref: "#/definitions/Member"
+      responses:
+        200:
+          description: "Success"
+        405:
+          description: "Invalid input"
+  /delete/member/{name}:
+    delete:
+      tags:
+      - "member"
+      summary: "Deletes a pet"
+      description: ""
+      operationId: "deleteMember"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name to delete"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Pet not found"
+  /price:
+    get:
+      tags:
+      - "price"
+      summary: "Access to all prices"
+      description: "view of all prices"
+      operationId: "viewPrices"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Price"
+        400:
+          description: "Invalid status value"
+  /add/price:
+    post:
+      tags:
+      - "price"
+      summary: "Add member"
+      description: ""
+      operationId: "updatePetWithForm"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "price"
+        in: "body"
+        description: "Add price"
+        required: true
+        schema:
+          $ref: "#/definitions/Price"
+      responses:
+        200:
+          description: "Success"
+        405:
+          description: "Invalid input"
+  /delete/price/{price}:
+    delete:
+      tags:
+      - "price"
+      summary: "Deletes a pet"
+      description: ""
+      operationId: "deletePrice"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "price"
+        in: "path"
+        description: "price to delete"
+        required: true
+        type: "integer"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Pet not found"
+  /check/{name}/date/{date}:
+    get:
+      tags:
+      - "check"
+      summary: "Access to cheks table"
+      description: "view of cheks table"
+      operationId: "findCheksTable"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name"
+        required: true
+        type: "string"
+      - name: "date"
+        in: "path"
+        description: "start of the month ex) 20190801"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Check"
+        400:
+          description: "Invalid status value"
+  /check/unpaid/{name}:
+    get:
+      tags:
+      - "check"
+      summary: "Access to unpaid sum"
+      description: "view of unpaid sum"
+      operationId: "findUnpaidSum"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UnpaidSum"
+        400:
+          description: "Invalid status value"
+  /update/check:
+    post:
+      tags:
+      - "check"
+      summary: "check"
+      description: ""
+      operationId: "updateCheck"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        schema:
+          $ref: "#/definitions/Member"
+      responses:
+        200:
+          description: "Success"
+        405:
+          description: "Invalid input"
+  /delete/check/{name}:
+    delete:
+      tags:
+      - "check"
+      summary: "Deletes all check"
+      description: ""
+      operationId: "deleteCheck"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "check to delete"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "check supplied"
+        404:
+          description: "check not found"
+  /order/{name}/date/{date}:
+    get:
+      tags:
+      - "order"
+      summary: "Access to order"
+      description: "view of order"
+      operationId: "findOrder"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name"
+        required: true
+        type: "string"
+      - name: "date"
+        in: "path"
+        description: "start of the month ex) 20190801"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        400:
+          description: "Invalid status value"
+  /order/sum/{name}/date/{date}:
+    get:
+      tags:
+      - "order"
+      summary: "Access to sum"
+      description: "view of sum"
+      operationId: "findOrderSum"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name"
+        required: true
+        type: "string"
+      - name: "date"
+        in: "path"
+        description: "start of the month ex) 20190801"
+        required: true
+        type: "integer"      
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Sum"
+        400:
+          description: "Invalid status value"
+  /update/order:
+    post:
+      tags:
+      - "order"
+      summary: "update order"
+      description: ""
+      operationId: "updateOrder"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "body"
+        schema:
+          $ref: "#/definitions/PostOrder"
+      responses:
+        200:
+          description: "Success"
+        405:
+          description: "Invalid input"
+  /delete/order/all/{name}:
+    delete:
+      tags:
+      - "order"
+      summary: "Deletes all order"
+      description: ""
+      operationId: "deleteOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "check to delete"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "check supplied"
+        404:
+          description: "check not found"
+  /delete/order/{orderId}:
+    delete:
+      tags:
+      - "order"
+      summary: "Deletes one order"
+      description: ""
+      operationId: "deleteOrderOne"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "check to delete"
+        required: true
+        type: "integer"  
+      responses:
+        400:
+          description: "check supplied"
+        404:
+          description: "check not found"  
+definitions:
+  Check:
+    type: "object"
+    properties:
+      check_id:
+        type: "number"
+        example: "20190823143630"
+      name:
+        type: "string"
+        example: "sato"
+      paid:
+        type: "integer"
+        example: "130"
+      Date:
+        type: "integer"
+        example: "20190823"
+  Order:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "sato"
+      price:
+        type: "integer"
+        example: "200"
+      Date:
+        type: "integer"
+        example: "20190823"
+      order_id:
+        type: "integer"
+        example: "15"
+      paid:
+        type: "integer"
+        example: "20190825"
+      Check_history:
+        type: "integer"
+        example: 
+  Member:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      name:
+        type: "string"
+        example: "sato"
+  UnpaidSum:
+    type: "object"
+    required:
+      - "unpaid_sum"
+    properties:
+      unpaid_sum:
+        type: "integer"
+        example: "130"
+  Sum:
+    type: "object"
+    required:
+      - "sum"
+    properties:
+      sum:
+        type: "integer"
+        example: "130"  
+  Price:
+    type: "object"
+    required:
+      - "price"
+    properties:
+      price:
+        type: "integer"
+        example: "100"
+      freq:
+        type: "integer"
+        example: "0"
+  PostOrder:
+    type: "object"
+    required:
+      - "price"
+    properties:
+      name:
+        type: "string"
+        example: "sato"
+      price:
+        type: "integer"
+        example: "110"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -1,0 +1,38 @@
+
+<h1>
+<div class="box">
+    <div class="item1">
+        {{(member$ | async).name}}'s cart    
+    </div>
+    <div class="item2">
+        <mat-icon matBadge="{{q_sum$ |async}}" matBadgeOverlap="true">shopping_cart</mat-icon>
+    </div>
+    <div class="item2">
+         &yen;{{p_sum$ |async}}
+    </div>
+   <input #name type="hidden" [value]="(member$ | async).name">
+   <input #price type="hidden" [value]="(p_sum$ | async)">
+    <div class="item3">
+         <button mat-raised-button color="primary" [disabled]="(p_sum$ |async)==0"  (click)="doOrder(name.value,price.value)">
+            order
+        </button>
+    </div>
+</div>
+</h1>
+ 
+ <br>
+<div *ngFor= "let price of (prices$ | async) ; let i = index ">
+        <div class="price">
+    &yen;{{price.price}}  
+    </div>      
+    <mat-slider #mySlider="matSlider" color="primary" (change)="updateSetting($event,i)" 
+    [max]="max" [min]="min" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval"
+    [value]="price.freq"></mat-slider>
+    {{price.freq}}
+    <br>
+<br>
+</div>
+<br>
+<div class="reset">
+<button mat-raised-button color="warn" [disabled]="(p_sum$ |async)==0"  (click)="reset()">reset</button>
+</div>

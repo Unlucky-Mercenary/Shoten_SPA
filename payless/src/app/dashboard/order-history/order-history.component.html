@@ -1,0 +1,32 @@
+{{(orders$ | async)[0]}}
+<table mat-table [dataSource]="(orders$ | async)" *ngIf="orders$ | async as orders; else Fetching">
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="order_id">
+      <th mat-header-cell *matHeaderCellDef> Order ID </th>
+      <td mat-cell *matCellDef="let orders"> {{orders.orderid}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> OrderDate </th>
+      <td mat-cell *matCellDef="let orders"> {{orders.date}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>price</th>
+      <td mat-cell *matCellDef="let orders"> {{orders.price}} </td>
+    </ng-container>
+  
+  
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+  </table>
+  
+  <ng-template #Fetching>
+    <div>Fetching...</div>
+    <mat-spinner></mat-spinner>
+  </ng-template>

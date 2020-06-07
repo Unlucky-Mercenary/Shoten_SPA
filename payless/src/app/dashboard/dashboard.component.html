@@ -1,0 +1,30 @@
+
+<ng-container *ngIf="member$ | async as member;" >
+    <nav mat-tab-nav-bar color="primary">
+      <a mat-tab-link routerLink="/order/{{member.name}}"
+      [active]=false>
+        Order
+      </a>
+      <a mat-tab-link routerLink="/dashboard/{{member.name}}"
+      [active]=true>
+        Dashboard
+      </a>
+    </nav>
+    <router-outlet></router-outlet>
+      <h2>{{member.name | uppercase}} 's Page</h2>
+    </ng-container>
+
+    <mat-form-field>
+      <mat-label>Select Date</mat-label>
+      <mat-select #select  [(value)]="selected">
+        <mat-option  *ngFor="let date of dates" [value]="date.value">
+          {{date.view}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    {{(member$ | async ).name}}
+    {{selected}}
+    <app-order-history [selected]="select.value" [name]="(member$ | async ).name"></app-order-history>
+
+    <button mat-raised-button color="primary" (click)="goBack()">Top Page</button>

@@ -1,0 +1,19 @@
+
+<ng-container *ngIf="member$ | async as member; else userFetching" >
+  <nav mat-tab-nav-bar color="primary">
+    <a mat-tab-link routerLink="/order/{{member.name}}" [active]=true>
+      Order
+    </a>
+    <a mat-tab-link routerLink="/dashboard/{{member.name}}" [active]=false>
+      Dashboard
+    </a>
+  </nav>
+  <router-outlet></router-outlet>
+    <app-price-list></app-price-list>
+  </ng-container>
+
+  <ng-template #userFetching>
+    <div>Fetching...</div>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+<button mat-raised-button color="primary" (click)="goBack()">Top Page</button>

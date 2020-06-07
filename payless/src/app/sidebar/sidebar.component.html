@@ -1,0 +1,12 @@
+<mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a *ngFor="let member of members | async as members" mat-list-item routerLink="/order/{{member.name}}">
+      <mat-icon>person</mat-icon>
+      {{member.name}}
+      </a>
+      <a mat-list-item href="/Settings">
+        <mat-icon>settings</mat-icon>
+        Settings</a>
+    </mat-nav-list>
+
+  
