@@ -1,0 +1,13 @@
+<h2>Lab Members</h2>
+
+<ul class="members">
+  <li *ngFor="let member of members">
+    <nav>
+    <a routerLink="/detail/{{member.name}}">
+      {{member.name}}
+    </a>
+    </nav>
+  </li>
+</ul>
+
+<app-member-page [member]="selectedMember"></app-member-detail>
